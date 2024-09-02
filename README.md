@@ -23,7 +23,7 @@ Tener instalado previamente las siguientes herramientas/software:
 ## Microservicio Receptor
 
 ## Mockserver
-Este componente simulará los llamados del healthcheck de los componentes de GestorLlamadas Principal y Redundante, y adicionalmente contiene el servicio de gestor llamdas (/call)
+Este componente simulará las llamadas de healthcheck de los componentes GestorLlamadas Principal y Redundante, y también incluye un mock del servicio de gestión de llamadas (/call).
 Para levantarlo de manera local, seguir los siguientes pasos:
 
 1. Ubicarse en el directorio del Mockserver `cd Mockserver/`
