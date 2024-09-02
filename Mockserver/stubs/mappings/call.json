@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/call"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "call-response.json",
+    "headers": {
+      "Content-Type": "application/json;charset=UTF-8"
+    }
+  }
+}

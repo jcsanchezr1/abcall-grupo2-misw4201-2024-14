@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "caee303b-30e9-419f-8761-3b3a60f524de",
+		"name": "Abcall",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2750860",
+		"_collection_link": "https://timecontrol.postman.co/workspace/TCT~e4bf613c-84ca-4624-ad9c-4c8c0259e211/collection/2750860-caee303b-30e9-419f-8761-3b3a60f524de?action=share&source=collection_link&creator=2750860"
+	},
+	"item": [
+		{
+			"name": "PubSub",
+			"item": [
+				{
+					"name": "Publicar Mensaje Topico",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"messages\": [\n        {\n            \"data\": \"ewoibWVzc2FnZSI6ICJSZWNlcHRvciBwdWJsaWNhbmRvIE1lbnNhamUiCn0=\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/topics/message:publish",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"topics",
+								"message:publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumir Mensaje Subcripcion GestorLlamadas Principal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"maxMessages\": \"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/subscriptions/message.gestor-llamadas-principal:pull",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"subscriptions",
+								"message.gestor-llamadas-principal:pull"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumir Mensaje Subcripcion GestorLlamadas Redundante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"maxMessages\": \"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/subscriptions/message.gestor-llamadas-redundante:pull",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"subscriptions",
+								"message.gestor-llamadas-redundante:pull"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mockserver",
+			"item": [
+				{
+					"name": "Mockserver healthcheck",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:9999/healthcheck",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9999",
+							"path": [
+								"healthcheck"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mockserver call",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:9999/call",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9999",
+							"path": [
+								"call"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
