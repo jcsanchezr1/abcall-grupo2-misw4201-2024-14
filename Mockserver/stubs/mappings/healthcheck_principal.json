@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "url": "/healthcheck"
+    "url": "/principal/healthcheck"
   },
   "response": {
     "status": 200,
-    "body": "{\"status\": \"Healthy\"}",
+    "bodyFileName": "principal-response.json",
     "headers": {
       "Content-Type": "application/json;charset=UTF-8"
     }

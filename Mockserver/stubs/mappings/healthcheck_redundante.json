@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/redundante/healthcheck"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"status\": \"healthy\", \"component\": \"Redundante\"}",
+    "headers": {
+      "Content-Type": "application/json;charset=UTF-8"
+    }
+  }
+}

@@ -121,12 +121,19 @@
 			"name": "Mockserver",
 			"item": [
 				{
-					"name": "Mockserver healthcheck",
+					"name": "Healthcheck Principal",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
 						"url": {
-							"raw": "http://127.0.0.1:9999/healthcheck",
+							"raw": "http://127.0.0.1:9999/principal/healthcheck",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -136,6 +143,7 @@
 							],
 							"port": "9999",
 							"path": [
+								"principal",
 								"healthcheck"
 							]
 						}
@@ -143,7 +151,37 @@
 					"response": []
 				},
 				{
-					"name": "Mockserver call",
+					"name": "Healthcheck Redundante",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9999/redundante/healthcheck",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9999",
+							"path": [
+								"redundante",
+								"healthcheck"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Call",
 					"request": {
 						"method": "POST",
 						"header": [],

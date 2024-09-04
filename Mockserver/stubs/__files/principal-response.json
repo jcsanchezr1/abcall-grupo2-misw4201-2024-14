@@ -1,0 +1,4 @@
+{
+  "status": "{{pickRandom 'healthy' 'unHealthy'}}",
+  "component": "Principal"
+}
