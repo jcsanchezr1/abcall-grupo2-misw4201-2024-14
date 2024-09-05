@@ -8,3 +8,12 @@ services:
     command: gcloud beta emulators pubsub start --project=abcall --host-port=0.0.0.0:8120
     ports:
       - "8120:8120"
+
+  receptor:
+    build:
+      context: ./Receptor
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mockserver
+      - pubsub

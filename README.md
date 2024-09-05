@@ -55,3 +55,10 @@ Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
 3. Hacer click en el boton de **Run All Request in File**, esto ejecutará las peticiones para la creacion de los topicos y subscripciones
 4. Un panel se abrirá automáticamente mostrando la respuesta HTTP para cada solicitud, incluyendo el código de estado y el cuerpo de la respuesta
 5. Asegurarse de que todas las solicitudes ejecutadas hayan finalizado correctamente y que el código de estado HTTP 200 esté presente en cada una de ellas, lo que confirmará que los tópicos y suscripciones se han creado exitosamente.
+
+#### Receptor
+
+Para desplegar el contenedor de Receptor, siga estos pasos:
+
+    1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
+    2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d receptor`
