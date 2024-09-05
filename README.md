@@ -16,34 +16,36 @@ Tener instalado previamente las siguientes herramientas/software:
 - Git
 - Python
 
-## Microservicio GestorLlamadas
+## Experimento 1
 
-## Microservicio Monitor
+### Microservicio GestorLlamadas
 
-## Microservicio Receptor
+### Microservicio Monitor
 
-## Mockserver
+### Microservicio Receptor
+
+### Mockserver
 Este componente simulará las llamadas de healthcheck de los componentes GestorLlamadas Principal y Redundante, y también incluye un mock del servicio de gestión de llamadas (/call).
 Para levantarlo de manera local, seguir los siguientes pasos:
 
-1. Ubicarse en el directorio del Mockserver `cd Mockserver/`
+1. Ubicarse en el directorio del Mockserver `cd Experimento1/Mockserver/`
 2. Construir la imagen del mockserver con el siguiente comando
 
 `docker build --tag mockserver .`
 
-3. Ubicarse en la raiz del repositorio y levantar la imagen creada previamente con el siguiente comando (docker-compose):
+3. Ubicarse en la raiz de la Carpeta Experimento1 (`cd Experimento1/`) y levantar la imagen creada previamente con el siguiente comando (docker-compose):
 
 `docker compose up -d mockserver`
 
-## PubSub
+### PubSub
 Estamos usando el emulador de Pub/Sub que es un servicio de GCP de mensajería escalable y asíncrono que separa los servicios que producen mensajes de los que los procesan.
 Para levantarlo de manera local, estamos utilizando el emulador de PubSub con ayuda de Docker:
 
-Iniciar y ejecutar el emulador de Pub/Sub (ubicarse en el mismo directorio que contiene el archivo docker-compose.yml).
+Iniciar y ejecutar el emulador de Pub/Sub (ubicarse en el mismo directorio que contiene el archivo docker-compose.yml `cd Experimento1/`)
 
 `docker compose up -d pubsub`
 
-### Creacion topicos y subscripciones en el emulador de PubSub
+#### Creacion topicos y subscripciones en el emulador de PubSub
 
 En el archivo `gcp-pubsub-request.http` se definen los topicos y subscripciones para la ejecución del experimento, para ello se recomienda ejecutarlo desde un IDE.
 Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
