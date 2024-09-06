@@ -8,8 +8,8 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 db = SQLAlchemy()
 
 class TipoEstado(enum.Enum):
-    UnHealthy = "unHealthy"
-    Healthy = "healthy"
+    UnHealthy = "UNHEALTHY"
+    Healthy = "HEALTHY"
 
 class TipoEstadoEstadoAuditoria(enum.Enum):
     Pending = "pending"
@@ -28,7 +28,7 @@ class Auditoria(db.Model):
 
 
     def __repr__(self):
-        return "{}-{}-{}-{}-{}".format(self.id,self.id_llamada,self.fecha_registro,self.fecha_finalizacion,self.tipo_app)
+        return "{}-{}-{}-{}-{}-{}-{}-{}-{}".format(self.id,self.id_llamada,self.fecha_registro,self.fecha_finalizacion,self.estado_principal,self.id_estado_principal,self.estado_redundante,self.id_estado_redundante, self.estado_auditoria)
 
 
 class EnumADiccionario(fields.Field):

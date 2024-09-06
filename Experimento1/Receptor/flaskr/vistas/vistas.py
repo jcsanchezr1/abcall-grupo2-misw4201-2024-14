@@ -25,8 +25,6 @@ subscription_path = subscriber_client.subscription_path(project_id, subscription
 
 
 class VistaAuditoria(Resource):
-    def __init__(self):
-        self.vista_topicos = VistaTopicos()  # Crear instancia de VistaTopicos
 
     def get(self):
         return [auditoria_schema.dumps(auditor) for auditor in Auditoria.query.all()]
@@ -35,21 +33,15 @@ class VistaAuditoria(Resource):
 
         monitor_url = 'http://127.0.0.1:5000/monitor/healthcheck'
         try:
-            # Realizar la llamada al servicio de monitor
             monitor_response = requests.get(monitor_url)
-
-            # Verificar si el servicio de monitor respondió correctamente
             if monitor_response.status_code != 200:
                 return {'error': 'Monitor service is unavailable or returned an error'}, 503
 
-            # Analizar la respuesta del monitor (opcional, dependiendo de la lógica del servicio)
             monitor_data = monitor_response.json()
-            print("Monitor response data:", monitor_data)
 
-            # Extraer los datos para la auditoría desde la respuesta del monitor
-            principal_status = monitor_data['principal']['status']
+            principal_status = monitor_data['principal']['status'].upper()
             principal_id = monitor_data['principal']['id']
-            redundante_status = monitor_data['redundante']['status']
+            redundante_status = monitor_data['redundante']['status'].upper()
             redundante_id = monitor_data['redundante']['id']
             estado_auditoria = TipoEstadoEstadoAuditoria.Pending
 
@@ -59,20 +51,18 @@ class VistaAuditoria(Resource):
             nueva_auditoria = Auditoria(
                 id_llamada=id_llamada,
                 fecha_registro=fecha_registro,
-                estado_principal=TipoEstado(principal_status),  # Asigna el estado principal
-                id_estado_principal=str(principal_id),          # Asigna el ID del estado principal
-                estado_redundante=TipoEstado(redundante_status), # Asigna el estado redundante
-                id_estado_redundante=str(redundante_id),        # Asigna el ID del estado redundante
-                estado_auditoria=estado_auditoria               # Asigna estado de la auditoría
+                estado_principal=TipoEstado(principal_status),
+                id_estado_principal=str(principal_id),
+                estado_redundante=TipoEstado(redundante_status),
+                id_estado_redundante=str(redundante_id),
+                estado_auditoria=estado_auditoria
             )
 
             db.session.add(nueva_auditoria)
             db.session.commit()
 
-            # Obtener el ID de la nueva auditoría
             auditoria_id = nueva_auditoria.id
 
-            # Llamar al método post de VistaTopicos
             topicos_url = 'http://localhost:5001/publish'
             message = {
                 'message': json.dumps({
@@ -86,9 +76,45 @@ class VistaAuditoria(Resource):
             if response.status_code != 200:
                 return {'error': 'Failed to publish message to topics'}, 500
 
-            data = response.json()  # Si la respuesta es un JSON
+            data = response.json()
             print("Respuesta JSON:", data)
             return auditoria_schema.dump(nueva_auditoria), 201
+        except Exception as e:
+            return {'error': f'Ocurrió un error: {str(e)}'}, 500
+
+    def put(self):
+        try:
+            id_auditoria = request.json["id_auditoria"]
+            id_llamada = request.json["id_llamada"]
+            componente = request.json["componente"]
+            print(id_auditoria)
+
+            if not id_auditoria or not id_llamada or not componente:
+                print("Faltan datos en el mensaje.")
+                message.nack()
+                return
+
+            auditoria = Auditoria.query.get(id_auditoria)
+            print(auditoria)
+            if not auditoria:
+                print(f"Auditoría con id {id_auditoria} no encontrada.")
+                message.nack()
+                return
+
+            if componente == 'Principal':
+                if auditoria.estado_principal == TipoEstado.Healthy:
+                    auditoria.estado_auditoria = TipoEstadoEstadoAuditoria.Completed
+                    auditoria.fecha_finalizacion = datetime.datetime.now()
+                    print(f"Auditoría {id_auditoria} completada por componente Principal (Healthy).")
+                    db.session.commit()
+            elif componente == 'Redundante':
+                if auditoria.estado_principal == TipoEstado.UnHealthy:
+                    auditoria.estado_auditoria = TipoEstadoEstadoAuditoria.Completed
+                    auditoria.fecha_finalizacion = datetime.datetime.now()
+                    print(f"Auditoría {id_auditoria} completada por componente Redundante (unHealthy).")
+                    db.session.commit()
+
+            return "", 200
         except Exception as e:
             return {'error': f'Ocurrió un error: {str(e)}'}, 500
 
@@ -118,13 +144,27 @@ class PubSubSubscriber:
         """
         Método que se invoca cuando llega un nuevo mensaje.
         """
-        print("Callback ejecutado")
+
         try:
-            print(f"Received message: {message.data.decode('utf-8')}")
-            # Aquí puedes agregar la lógica para procesar el mensaje
-            message.ack()  # Reconocer (acknowledge) el mensaje una vez procesado
+            # Usar el contexto de aplicación para acceder a la base de datos
+
+            message_data = json.loads(message.data.decode('utf-8'))
+            print(f"Received message: {message_data}")
+            put_url = 'http://localhost:5001/auditorias'
+            response = requests.put(put_url, json=message_data)
+
+            if response.status_code == 200:
+                print("PUT request successful.")
+            else:
+                print(f"PUT request failed with status code {response.status_code}: {response.text}")
+                message.nack()
+                return
+
+            # Reconocer (acknowledge) el mensaje una vez procesado
+            message.ack()
         except Exception as e:
             print(f"Error processing message: {e}")
+            message.nack()
 
     def start_listening(self):
         """
@@ -132,10 +172,9 @@ class PubSubSubscriber:
         """
         print("Iniciando escucha de nuevos mensajes...")
         # Configurar el suscriptor para escuchar nuevos mensajes de forma indefinida
-        future = subscriber_client.subscribe(subscription_path, self.callback)
-
-        # Mantener el suscriptor en ejecución sin bloquear el hilo principal
         try:
+            future = subscriber_client.subscribe(subscription_path, self.callback)
+            # Mantener el suscriptor en ejecución sin bloquear el hilo principal
             future.result()
         except Exception as e:
             print(f"Listening interrupted: {e}")
