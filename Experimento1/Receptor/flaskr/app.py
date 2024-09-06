@@ -1,7 +1,6 @@
 from flaskr import create_app
 
-from .modelos import db, Auditoria, TipoApp
-from .modelos import AuditoriaSchema
+from .modelos import db
 from .vistas import VistaAuditoria, VistaTopicos
 from flask_restful import Api
 
@@ -16,21 +15,5 @@ db.create_all()
 api = Api(app)
 api.add_resource(VistaAuditoria, '/auditorias')
 api.add_resource(VistaTopicos, '/publish')
-
-#prueba
-"""with app.app_context():
-    auditoria_schema =  auditoriaschema()
-    nueva_auditoria = auditoria(
-        id_llamada="abc123",                    
-        fecha_registro=datetime.datetime.now(),           
-        fecha_finalizacion=datetime.datetime.now(),  
-        tipo_app=TipoApp.ACTIVO                  
-    )
-
-    
-    db.session.add(nueva_auditoria)
-    db.session.commit()
-    #print(auditoria.query.all())
-    print([auditoria_schema.dumps(auditor) for auditor in auditoria.query.all()])"""
 
 

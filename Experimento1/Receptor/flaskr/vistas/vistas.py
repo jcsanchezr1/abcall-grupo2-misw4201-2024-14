@@ -1,6 +1,6 @@
 from flask_restful import Resource
 
-from ..modelos import db, Auditoria, TipoApp, AuditoriaSchema
+from ..modelos import db, Auditoria, AuditoriaSchema,TipoEstadoEstadoAuditoria, TipoEstado
 from flask import request, Flask, request, jsonify
 from google.cloud import pubsub_v1
 
@@ -32,15 +32,40 @@ class VistaAuditoria(Resource):
         return [auditoria_schema.dumps(auditor) for auditor in Auditoria.query.all()]
 
     def post(self):
-        #TODO: CONSULTAR SERVICIO DE MONITOR
 
-        id_llamada = request.json['id_llamada']
-        fecha_registro = datetime.datetime.now()
-        tipo_app = TipoApp.Principal  # Check this value
-        try:            
-            nueva_auditoria = Auditoria(id_llamada=id_llamada,
-                                        fecha_registro=fecha_registro,
-                                        tipo_app=tipo_app)
+        monitor_url = 'http://127.0.0.1:5000/monitor/healthcheck'
+        try:
+            # Realizar la llamada al servicio de monitor
+            monitor_response = requests.get(monitor_url)
+
+            # Verificar si el servicio de monitor respondió correctamente
+            if monitor_response.status_code != 200:
+                return {'error': 'Monitor service is unavailable or returned an error'}, 503
+
+            # Analizar la respuesta del monitor (opcional, dependiendo de la lógica del servicio)
+            monitor_data = monitor_response.json()
+            print("Monitor response data:", monitor_data)
+
+            # Extraer los datos para la auditoría desde la respuesta del monitor
+            principal_status = monitor_data['principal']['status']
+            principal_id = monitor_data['principal']['id']
+            redundante_status = monitor_data['redundante']['status']
+            redundante_id = monitor_data['redundante']['id']
+            estado_auditoria = TipoEstadoEstadoAuditoria.Pending
+
+            id_llamada = request.json['id_llamada']
+            fecha_registro = datetime.datetime.now()
+
+            nueva_auditoria = Auditoria(
+                id_llamada=id_llamada,
+                fecha_registro=fecha_registro,
+                estado_principal=TipoEstado(principal_status),  # Asigna el estado principal
+                id_estado_principal=str(principal_id),          # Asigna el ID del estado principal
+                estado_redundante=TipoEstado(redundante_status), # Asigna el estado redundante
+                id_estado_redundante=str(redundante_id),        # Asigna el ID del estado redundante
+                estado_auditoria=estado_auditoria               # Asigna estado de la auditoría
+            )
+
             db.session.add(nueva_auditoria)
             db.session.commit()
 
