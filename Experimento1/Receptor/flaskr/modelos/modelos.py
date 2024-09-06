@@ -8,8 +8,8 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 db = SQLAlchemy()
 
 class TipoApp(enum.Enum):
-    ACTIVO = "ACTIVO"
-    REDUNDANTE = "REDUNDANTE"
+    Principal = "Principal"
+    Redundante = "Redundante"
 
 class Auditoria(db.Model):
     id = db.Column(db.Integer, primary_key=True)

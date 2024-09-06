@@ -2,7 +2,7 @@ from flaskr import create_app
 
 from .modelos import db, Auditoria, TipoApp
 from .modelos import AuditoriaSchema
-from .vistas import VistaAuditoria
+from .vistas import VistaAuditoria, VistaTopicos
 from flask_restful import Api
 
 
@@ -15,6 +15,7 @@ db.create_all()
 
 api = Api(app)
 api.add_resource(VistaAuditoria, '/auditorias')
+api.add_resource(VistaTopicos, '/publish')
 
 #prueba
 """with app.app_context():
