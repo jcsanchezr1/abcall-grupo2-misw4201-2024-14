@@ -45,6 +45,41 @@
 					"response": []
 				},
 				{
+					"name": "Publicar Mensaje Topico Receptor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"messages\": [\n        {\n            \"data\": \"ewoibWVzc2FnZSI6ICJSZWNlcHRvciBwdWJsaWNhbmRvIE1lbnNhamUgbWVuc2FqZSBJYW4iCn0=\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/topics/replies:publish",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"topics",
+								"replies:publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Consumir Mensaje Subcripcion GestorLlamadas Principal",
 					"request": {
 						"method": "POST",
@@ -234,7 +269,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/auditorias",
+							"raw": "http://127.0.0.1:5001/auditorias",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -242,7 +277,7 @@
 								"0",
 								"1"
 							],
-							"port": "5000",
+							"port": "5001",
 							"path": [
 								"auditorias"
 							]
@@ -265,7 +300,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/auditorias",
+							"raw": "http://127.0.0.1:5001/auditorias",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -273,7 +308,7 @@
 								"0",
 								"1"
 							],
-							"port": "5000",
+							"port": "5001",
 							"path": [
 								"auditorias"
 							]
@@ -307,6 +342,34 @@
 							"port": "5001",
 							"path": [
 								"auditorias"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monitor",
+			"item": [
+				{
+					"name": "healthcheck",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/monitor/healthcheck",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"monitor",
+								"healthcheck"
 							]
 						}
 					},
