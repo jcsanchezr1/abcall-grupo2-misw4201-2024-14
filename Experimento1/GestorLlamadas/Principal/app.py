@@ -37,16 +37,17 @@ class PubSubSubscriber:
 
         try:
             # Usar el contexto de aplicación para acceder a la base de datos
-
+            print(message)
             message_data = json.loads(message.data.decode('utf-8'))
-            new_message = {
-                'message': json.dumps({
-                    'id_auditoria': message_data.auditoria_id,
-                    'id_llamada': message_data.id_llamada,
-                    'componente': "Principal"
-                })
-            }
-            message_data["componente"] = "Principal"
+            id_auditoria = message_data['id_auditoria']
+            id_llamada = message_data['id_llamada']
+
+            new_message =  json.dumps({
+                                                    'id_auditoria': id_auditoria,
+                                                    'id_llamada': id_llamada,
+                                                    'componente': "Principal"
+                                                })
+
             print(f"Received message: {message_data}")
             print(f"New message: {new_message}")
 
