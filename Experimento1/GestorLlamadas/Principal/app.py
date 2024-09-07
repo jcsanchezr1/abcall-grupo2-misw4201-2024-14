@@ -19,6 +19,7 @@ topic_path = publisher_client.topic_path(project_id, topic_id)
 subscriber_client = pubsub_v1.SubscriberClient()
 subscription_path = subscriber_client.subscription_path(project_id, subscription_id)
 
+app = Flask(__name__)
 
 # Clase separada para manejar la suscripción y la escucha continua de mensajes en segundo plano
 class PubSubSubscriber:
@@ -75,4 +76,10 @@ class PubSubSubscriber:
 # Instancia del suscriptor (esto inicia la escucha de mensajes en segundo plano)
 subscriber = PubSubSubscriber()
 
-# Asegúrate de que el resto de la aplicación continúe funcionando
+# Ruta de prueba en Flask
+@app.route('/')
+def home():
+    return jsonify({"message": "Servidor en ejecución correctamente"})
+
+if __name__ == '__main__':
+    app.run(port=5002, debug=True)

@@ -182,5 +182,3 @@ class PubSubSubscriber:
 
 # Instancia del suscriptor (esto inicia la escucha de mensajes en segundo plano)
 subscriber = PubSubSubscriber()
-
-# Asegúrate de que el resto de la aplicación continúe funcionando
