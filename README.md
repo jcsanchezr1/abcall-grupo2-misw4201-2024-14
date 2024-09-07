@@ -22,6 +22,13 @@ Tener instalado previamente las siguientes herramientas/software:
 
 ### Microservicio Monitor
 
+Este componente estará encargado de consumir los healthchecks para validar el estado de salud de los componentes GestorLlamadas Principal y Redundante. Esta información la almecanará en una base de datos para entregársela al componente Receptor cuando la solicite.
+
+Para desplegar el contenedor de Monitor, siga estos pasos:
+
+1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
+2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d monitor`
+
 ### Microservicio Receptor
 
 Para desplegar el contenedor de Receptor, siga estos pasos:
