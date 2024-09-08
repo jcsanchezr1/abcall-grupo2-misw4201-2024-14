@@ -14,6 +14,16 @@ services:
     command: gcloud beta emulators pubsub start --project=abcall --host-port=0.0.0.0:8120
     ports:
       - "8120:8120"
+  principal:
+    build:
+      context: GestorLlamadas/Principal
+    ports:
+      - "5003:5003"
+  redundante:
+    build:
+      context: GestorLlamadas/Redundante
+    ports:
+      - "5004:5004"
   receptor:
     build:
       context: ./Receptor

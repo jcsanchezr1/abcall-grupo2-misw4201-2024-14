@@ -6,11 +6,7 @@ import json
 import requests
 import threading
 
-
-with open('http-client.env.json') as config_file:
-    config = json.load(config_file)['local']
-
-project_id = config['id-proyecto']
+project_id = "abcall"
 topic_id = "replies"
 subscription_id = "message.gestor-llamadas-principal"
 
@@ -83,4 +79,4 @@ def home():
     return jsonify({"message": "Servidor en ejecución correctamente"})
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(debug=True)
