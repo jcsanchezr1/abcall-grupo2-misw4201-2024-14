@@ -15,10 +15,17 @@ Tener instalado previamente las siguientes herramientas/software:
 - Docker
 - Git
 - Python
+- Apache-jmeter-5.6.3
 
 ## Experimento 1
 
 ### Microservicio GestorLlamadas
+
+Para desplegar el contenedor de GestorLlamadas pricipal y redundante, siga estos pasos:
+
+1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
+2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d principal`
+3. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d redundante`
 
 ### Microservicio Monitor
 
@@ -70,3 +77,30 @@ Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
 3. Hacer click en el boton de **Run All Request in File**, esto ejecutará las peticiones para la creacion de los topicos y subscripciones
 4. Un panel se abrirá automáticamente mostrando la respuesta HTTP para cada solicitud, incluyendo el código de estado y el cuerpo de la respuesta
 5. Asegurarse de que todas las solicitudes ejecutadas hayan finalizado correctamente y que el código de estado HTTP 200 esté presente en cada una de ellas, lo que confirmará que los tópicos y suscripciones se han creado exitosamente.
+
+### Importar script de ejecución Apache-jmeter
+
+En el archivo `Script Plan Pruebas Experimento 1.jmx` se encuntra el pan e pruebas del experimento.
+
+### Comandos para exportar la data desde el contenedor receptor
+
+1. Conectarse a sqlite desde el contenedor receptor
+
+```
+docker exec -it experimento1-receptor-1 /bin/bash
+sqlite3 /app/instance/experimento_abcall.db
+```
+
+2. Exportar la data a un archivo csv
+
+```
+.mode csv
+.output /app/instance/salida_final.csv
+SELECT au.*, ((julianday(au.fecha_finalizacion) - julianday(au.fecha_registro)) * 86400000) as diferencia FROM auditoria au;
+```
+
+3. Enviar el archivo a una ruta especifica por fuera del contenedor
+```
+docker cp experimento1-receptor-1:/app/instance/salida_final.csv /path/salida
+```
+Nota: `/path/salida` es la ruta donde se quiere exportar el reporte
