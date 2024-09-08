@@ -29,12 +29,21 @@ Para desplegar el contenedor de Monitor, siga estos pasos:
 1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
 2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d monitor`
 
+Si queremos conectarnos a la base de datos del contenedor Monitor ejecutar los siguientes comandos:
+1. `docker exec -it experimento1-monitor-1 /bin/bash`
+2. `sqlite3 /app/instance/healtchecks.db`
+
+
 ### Microservicio Receptor
 
 Para desplegar el contenedor de Receptor, siga estos pasos:
 
 1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
 2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d receptor`
+
+Si queremos conectarnos a la base de datos del contenedor Receptor ejecutar los siguientes comandos:
+1. `docker exec -it experimento1-receptor-1 /bin/bash`
+2. `sqlite3 /app/instance/experimento_abcall.db`
 
 ### Mockserver
 Este componente simulará las llamadas de healthcheck de los componentes GestorLlamadas Principal y Redundante, y también incluye un mock del servicio de gestión de llamadas (/call).
