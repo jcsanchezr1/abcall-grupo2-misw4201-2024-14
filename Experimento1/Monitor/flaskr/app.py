@@ -38,8 +38,8 @@ def check_health(url):
 
 def ejecutar_periodicamente():
     print("se llama al ejecutar_periodicamente")
-    check_health('http://mockserver:9999/redundante/healthcheck')
-    check_health('http://mockserver:9999/principal/healthcheck')
+    check_health('http://mockserver:8080/redundante/healthcheck')
+    check_health('http://mockserver:8080/principal/healthcheck')
 
 def job():
     with app.app_context():
