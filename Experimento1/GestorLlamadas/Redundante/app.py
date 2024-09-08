@@ -1,24 +1,24 @@
 from flask import request, Flask, jsonify
 from google.cloud import pubsub_v1
 
-import datetime
+
 import json
-import requests
 import threading
 
 
-with open('../http-client.env.json') as config_file:
+with open('http-client.env.json') as config_file:
     config = json.load(config_file)['local']
 
 project_id = config['id-proyecto']
 topic_id = "replies"
-subscription_id = "message.gestor-llamadas-principal"
+subscription_id = "message.gestor-llamadas-redundante"
 
 publisher_client = pubsub_v1.PublisherClient()
 topic_path = publisher_client.topic_path(project_id, topic_id)
 subscriber_client = pubsub_v1.SubscriberClient()
 subscription_path = subscriber_client.subscription_path(project_id, subscription_id)
 
+app = Flask(__name__)
 
 # Clase separada para manejar la suscripción y la escucha continua de mensajes en segundo plano
 class PubSubSubscriber:
@@ -36,16 +36,17 @@ class PubSubSubscriber:
 
         try:
             # Usar el contexto de aplicación para acceder a la base de datos
-
+            print(message)
             message_data = json.loads(message.data.decode('utf-8'))
-            new_message = {
-                'message': json.dumps({
-                    'id_auditoria': message_data.auditoria_id,
-                    'id_llamada': message_data.id_llamada,
-                    'componente': "Principal"
-                })
-            }
-            message_data["componente"] = "Principal"
+            id_auditoria = message_data['id_auditoria']
+            id_llamada = message_data['id_llamada']
+
+            new_message =  json.dumps({
+                                                    'id_auditoria': id_auditoria,
+                                                    'id_llamada': id_llamada,
+                                                    'componente': "Redundante"
+                                                })
+
             print(f"Received message: {message_data}")
             print(f"New message: {new_message}")
 
@@ -75,4 +76,10 @@ class PubSubSubscriber:
 # Instancia del suscriptor (esto inicia la escucha de mensajes en segundo plano)
 subscriber = PubSubSubscriber()
 
-# Asegúrate de que el resto de la aplicación continúe funcionando
+# Ruta de prueba en Flask
+@app.route('/')
+def home():
+    return jsonify({"message": "Servidor en ejecución correctamente"})
+
+if __name__ == '__main__':
+    app.run(port=5003, debug=True)
