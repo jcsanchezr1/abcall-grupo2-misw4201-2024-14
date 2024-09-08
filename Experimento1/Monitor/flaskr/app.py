@@ -1,5 +1,5 @@
 from flask_restful import Api
-from Monitor import create_app
+from flaskr import create_app
 from .modelos import db, HealthCheck
 from .vistas import VistaHealthChecks
 
@@ -38,8 +38,8 @@ def check_health(url):
 
 def ejecutar_periodicamente():
     print("se llama al ejecutar_periodicamente")
-    check_health('http://127.0.0.1:9999/redundante/healthcheck')
-    check_health('http://127.0.0.1:9999/principal/healthcheck')
+    check_health('http://mockserver:9999/redundante/healthcheck')
+    check_health('http://mockserver:9999/principal/healthcheck')
 
 def job():
     with app.app_context():
@@ -57,4 +57,4 @@ scheduler_thread.daemon = True
 scheduler_thread.start()
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True)

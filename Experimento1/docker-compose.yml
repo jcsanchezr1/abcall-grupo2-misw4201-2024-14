@@ -4,6 +4,11 @@ services:
       context: ./Mockserver
     ports:
       - "9999:8080"
+  monitor:
+    build:
+      context: ./Monitor
+    ports:
+      - "5002:5002"
   pubsub:
     image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
     command: gcloud beta emulators pubsub start --project=abcall --host-port=0.0.0.0:8120

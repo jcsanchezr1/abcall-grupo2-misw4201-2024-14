@@ -11,10 +11,7 @@ import threading
 
 auditoria_schema = AuditoriaSchema()
 
-with open('http-client.env.json') as config_file:
-    config = json.load(config_file)['local']
-
-project_id = config['id-proyecto']
+project_id = "abcall"
 topic_id = "message"
 subscription_id = "replies.receptor"
 
@@ -31,7 +28,7 @@ class VistaAuditoria(Resource):
 
     def post(self):
 
-        monitor_url = 'http://127.0.0.1:5000/monitor/healthcheck'
+        monitor_url = 'http://monitor:5002/monitor/healthcheck'
         try:
             monitor_response = requests.get(monitor_url)
             if monitor_response.status_code != 200:
@@ -63,7 +60,7 @@ class VistaAuditoria(Resource):
 
             auditoria_id = nueva_auditoria.id
 
-            topicos_url = 'http://localhost:5001/publish'
+            topicos_url = 'http://receptor:5001/publish'
             message = {
                 'message': json.dumps({
                     'id_auditoria': auditoria_id,
@@ -150,7 +147,7 @@ class PubSubSubscriber:
 
             message_data = json.loads(message.data.decode('utf-8'))
             print(f"Received message: {message_data}")
-            put_url = 'http://localhost:5001/auditorias'
+            put_url = 'http://receptor:5001/auditorias'
             response = requests.put(put_url, json=message_data)
 
             if response.status_code == 200:
