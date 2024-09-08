@@ -45,7 +45,7 @@ def job():
     with app.app_context():
         ejecutar_periodicamente()
 
-schedule.every(5).seconds.do(job)
+schedule.every(1).seconds.do(job)
 
 def run_schedule():
     while True:
