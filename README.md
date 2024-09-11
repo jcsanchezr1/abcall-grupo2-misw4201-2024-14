@@ -24,8 +24,8 @@ Tener instalado previamente las siguientes herramientas/software:
 Para desplegar el contenedor de GestorLlamadas pricipal y redundante, siga estos pasos:
 
 1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
-2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d principal`
-3. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d redundante`
+2. Ejecutar el comando para levantar el contenedor de Principal: `docker compose up -d principal`
+3. Ejecutar el comando para levantar el contenedor de Redundante: `docker compose up -d redundante`
 
 ### Microservicio Monitor
 
@@ -34,7 +34,7 @@ Este componente estará encargado de consumir los healthchecks para validar el e
 Para desplegar el contenedor de Monitor, siga estos pasos:
 
 1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
-2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d monitor`
+2. Ejecutar el comando para levantar el contenedor de Monitor: `docker compose up -d monitor`
 
 Si queremos conectarnos a la base de datos del contenedor Monitor ejecutar los siguientes comandos:
 1. `docker exec -it experimento1-monitor-1 /bin/bash`
@@ -57,7 +57,7 @@ Este componente simulará las llamadas de healthcheck de los componentes GestorL
 Para levantarlo de manera local, seguir los siguientes pasos:
 
 1. Ubicarse en la raíz de la carpeta Experimento1: (`cd Experimento1/`)
-2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d mockserver`
+2. Ejecutar el comando para levantar el contenedor de Mockserver: `docker compose up -d mockserver`
 
 ### PubSub
 Estamos usando el emulador de Pub/Sub que es un servicio de GCP de mensajería escalable y asíncrono que separa los servicios que producen mensajes de los que los procesan.
@@ -80,7 +80,7 @@ Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
 
 ### Importar script de ejecución Apache-jmeter
 
-En el archivo `Script Plan Pruebas Experimento 1.jmx` se encuntra el pan e pruebas del experimento.
+En el archivo `Script Plan Pruebas Experimento 1.jmx` se encuentra el plan de pruebas del experimento.
 
 ### Comandos para exportar la data desde el contenedor receptor
 
@@ -99,7 +99,7 @@ sqlite3 /app/instance/experimento_abcall.db
 SELECT au.*, ((julianday(au.fecha_finalizacion) - julianday(au.fecha_registro)) * 86400000) as diferencia FROM auditoria au;
 ```
 
-3. Enviar el archivo a una ruta especifica por fuera del contenedor
+3. Enviar el archivo a una ruta específica por fuera del contenedor
 ```
 docker cp experimento1-receptor-1:/app/instance/salida_final.csv /path/salida
 ```
