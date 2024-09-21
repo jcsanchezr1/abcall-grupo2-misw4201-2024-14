@@ -1,0 +1,25 @@
+services:
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    command: gcloud beta emulators pubsub start --project=abcall --host-port=0.0.0.0:8120
+    ports:
+      - "8120:8120"
+  incidente:
+    build:
+      context: ./GestorIncidentes
+    ports:
+      - "5001:5001"
+    depends_on:
+      - pubsub
+  receptor:
+    build:
+      context: ./Receptor_Verificador
+    ports:
+      - "5002:5002"
+  verificador:
+    build:
+      context: ./Receptor_Verificador
+    ports:
+      - "5003:5003"
+    depends_on:
+      - pubsub

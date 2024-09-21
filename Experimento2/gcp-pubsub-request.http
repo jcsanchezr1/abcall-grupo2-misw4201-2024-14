@@ -1,0 +1,11 @@
+#######################################################################################################################
+### Creacion topico incidente
+PUT http://localhost:{{puerto}}/v1/projects/{{id-proyecto}}/topics/incidente
+
+### Creacion subscripcion incidente.verificador
+PUT http://localhost:{{puerto}}/v1/projects/{{id-proyecto}}/subscriptions/incidente.{{verificador}}
+Content-Type: application/json
+
+{
+  "topic": "projects/{{id-proyecto}}/topics/incidente"
+}

@@ -104,3 +104,46 @@ SELECT au.*, ((julianday(au.fecha_finalizacion) - julianday(au.fecha_registro)) 
 docker cp experimento1-receptor-1:/app/instance/salida_final.csv /path/salida
 ```
 Nota: `/path/salida` es la ruta donde se quiere exportar el reporte
+
+## Experimento 2
+
+### Microservicio GestorIncidentes
+
+Para desplegar el contenedor de GestorIncidentes, siga estos pasos:
+
+1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
+2. Ejecutar el comando para levantar el contenedor de GestorIncidentes: `docker compose up -d incidente`
+
+### Microservicio Receptor
+
+Para desplegar el contenedor de Receptor, siga estos pasos:
+
+1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
+2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d receptor`
+
+### Microservicio Verificador
+
+Para desplegar el contenedor de Verificador, siga estos pasos:
+
+1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
+2. Ejecutar el comando para levantar el contenedor de Verificador: `docker compose up -d verificador`
+
+### PubSub
+Estamos usando el emulador de Pub/Sub que es un servicio de GCP de mensajería escalable y asíncrono que separa los servicios que producen mensajes de los que los procesan.
+Para levantarlo de manera local, estamos utilizando el emulador de PubSub con ayuda de Docker:
+
+Iniciar y ejecutar el emulador de Pub/Sub (ubicarse en el mismo directorio que contiene el archivo docker-compose.yml `cd Experimento2/`)
+
+`docker compose up -d pubsub`
+
+#### Creacion topicos y subscripciones en el emulador de PubSub
+
+En el archivo `gcp-pubsub-request.http` se definen los topicos y subscripciones para la ejecución del experimento, para ello se recomienda ejecutarlo desde un IDE.
+Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
+
+1. Abrir el archivo `gcp-pubsub-request.http` desde el IDE Intellij
+2. Seleccionar el ambiente local. Este fue creado previamente y está especificado en el archivo `http-client.env.json`
+3. Hacer click en el boton de **Run All Request in File**, esto ejecutará las peticiones para la creacion de los topicos y subscripciones
+4. Un panel se abrirá automáticamente mostrando la respuesta HTTP para cada solicitud, incluyendo el código de estado y el cuerpo de la respuesta
+5. Asegurarse de que todas las solicitudes ejecutadas hayan finalizado correctamente y que el código de estado HTTP 200 esté presente en cada una de ellas, lo que confirmará que los tópicos y suscripciones se han creado exitosamente.
+

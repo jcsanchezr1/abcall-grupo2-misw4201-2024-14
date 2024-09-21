@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "b2d07ea7-f1e9-4065-b898-9563f62c3a39",
+		"name": "Abcall Seguridad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2750860",
+		"_collection_link": "https://timecontrol.postman.co/workspace/TCT~e4bf613c-84ca-4624-ad9c-4c8c0259e211/collection/2750860-b2d07ea7-f1e9-4065-b898-9563f62c3a39?action=share&source=collection_link&creator=2750860"
+	},
+	"item": [
+		{
+			"name": "PubSub",
+			"item": [
+				{
+					"name": "Publicar Mensaje Topico Incidente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"messages\": [\n        {\n            \"data\": \"ewoibWVzc2FnZSI6ICJSZWNlcHRvciBwdWJsaWNhbmRvIE1lbnNhamUiCn0=\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/topics/incidente:publish",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"topics",
+								"incidente:publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumir Mensaje Subcripcion Incidente Verificador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"maxMessages\": \"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8120/v1/projects/abcall/subscriptions/incidente.verificador:pull",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8120",
+							"path": [
+								"v1",
+								"projects",
+								"abcall",
+								"subscriptions",
+								"incidente.verificador:pull"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
