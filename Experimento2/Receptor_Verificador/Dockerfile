@@ -5,7 +5,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r flaskr/requirements.txt
 RUN apt-get update && apt-get install -y sqlite3
 
-EXPOSE 5001
+EXPOSE 5003
 
 # Establece la variable de entorno FLASK_APP a la ubicación correcta del archivo app.py
 ENV FLASK_APP=flaskr/app.py
