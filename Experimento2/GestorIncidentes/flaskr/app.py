@@ -9,6 +9,3 @@ app_context.push()
 
 api = Api(app)
 api.add_resource(VistaGestorIncidente, '/incidente')
-
-
-

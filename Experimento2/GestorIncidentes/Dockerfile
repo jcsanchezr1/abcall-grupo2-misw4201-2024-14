@@ -13,4 +13,4 @@ ENV PUBSUB_EMULATOR_HOST="pubsub:8120"
 ENV PUBSUB_PROJECT_ID="abcall"
 
 # Comando para iniciar la aplicación Flask
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5003"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5001"]
