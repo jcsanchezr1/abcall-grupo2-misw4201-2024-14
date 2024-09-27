@@ -19,6 +19,7 @@ services:
   verificador:
     build:
       context: ./Receptor_Verificador
+      dockerfile: Dockerfile
     ports:
       - "5003:5003"
     depends_on:

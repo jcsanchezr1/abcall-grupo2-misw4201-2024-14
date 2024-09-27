@@ -1,9 +1,8 @@
 from flaskr import create_app
 
 from .modelos import db
-from .vistas import VistaAuditoria
+from .vistas import VistaAuditoria, VistaReceptor
 from flask_restful import Api
-
 
 app = create_app('default')
 app_context = app.app_context()
@@ -14,6 +13,7 @@ db.create_all()
 
 api = Api(app)
 api.add_resource(VistaAuditoria, '/auditorias')
+api.add_resource(VistaReceptor, '/receptor')
 
 
 
