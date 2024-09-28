@@ -114,19 +114,12 @@ Para desplegar el contenedor de GestorIncidentes, siga estos pasos:
 1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
 2. Ejecutar el comando para levantar el contenedor de GestorIncidentes: `docker compose up -d incidente`
 
-### Microservicio Receptor
+### Microservicio ReceptorVerificador
 
 Para desplegar el contenedor de Receptor, siga estos pasos:
 
 1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
-2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d receptor`
-
-### Microservicio Verificador
-
-Para desplegar el contenedor de Verificador, siga estos pasos:
-
-1. Ubicarse en la raíz de la carpeta Experimento2: (`cd Experimento2/`)
-2. Ejecutar el comando para levantar el contenedor de Verificador: `docker compose up -d verificador`
+2. Ejecutar el comando para levantar el contenedor de Receptor: `docker compose up -d receptor_verificador`
 
 ### PubSub
 Estamos usando el emulador de Pub/Sub que es un servicio de GCP de mensajería escalable y asíncrono que separa los servicios que producen mensajes de los que los procesan.
@@ -146,4 +139,27 @@ Se recomienda usar Intellij el cual soporta la ejecución de archivos `.http`
 3. Hacer click en el boton de **Run All Request in File**, esto ejecutará las peticiones para la creacion de los topicos y subscripciones
 4. Un panel se abrirá automáticamente mostrando la respuesta HTTP para cada solicitud, incluyendo el código de estado y el cuerpo de la respuesta
 5. Asegurarse de que todas las solicitudes ejecutadas hayan finalizado correctamente y que el código de estado HTTP 200 esté presente en cada una de ellas, lo que confirmará que los tópicos y suscripciones se han creado exitosamente.
+
+### Comandos para exportar la data desde el contenedor receptor_verificador
+
+1. Conectarse a sqlite desde el contenedor receptor_verificador
+
+```
+docker exec -it experimento2-receptor_verificador-1 /bin/bash
+sqlite3 /app/instance/experimento2_abcall.db
+```
+
+2. Exportar la data a un archivo csv
+
+```
+.mode csv
+.output /app/instance/salida_final.csv
+SELECT au.*, ((julianday(au.fecha_finalizacion) - julianday(au.fecha_registro)) * 86400000) as diferencia FROM auditoria au;
+```
+
+3. Enviar el archivo a una ruta específica por fuera del contenedor
+```
+docker cp experimento2-receptor_verificador-1:/app/instance/salida_final.csv /path/salida
+```
+Nota: `/path/salida` es la ruta donde se quiere exportar el reporte
 

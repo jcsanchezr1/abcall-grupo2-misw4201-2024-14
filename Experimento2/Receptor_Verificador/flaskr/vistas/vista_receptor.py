@@ -34,7 +34,7 @@ class VistaReceptor(Resource):
             "payload": payload
         }
 
-        gestor_incidentes_url = "http://localhost:5001/incidente"
+        gestor_incidentes_url = "http://incidente:5001/incidente"
 
         try:
             respuesta = requests.post(gestor_incidentes_url, json=auditoria_enviada)

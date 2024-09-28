@@ -78,7 +78,7 @@ class PubSubSubscriber:
             # Usar el contexto de aplicación para acceder a la base de datos
 
             message_data = json.loads(message.data.decode('utf-8'))
-            put_url = 'http://localhost:5003/auditorias'
+            put_url = 'http://receptor_verificador:5003/auditorias'
             response = requests.put(put_url, json=message_data)
 
             if response.status_code == 200:
