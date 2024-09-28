@@ -11,12 +11,7 @@ services:
       - "5001:5001"
     depends_on:
       - pubsub
-    #receptor:
-      #build:
-      #context: ./Receptor_Verificador
-      #ports:
-      #- "5002:5002"
-  verificador:
+  receptor_verificador:
     build:
       context: ./Receptor_Verificador
       dockerfile: Dockerfile
